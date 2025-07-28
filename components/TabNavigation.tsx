@@ -1,51 +1,49 @@
-// app/components/TabNavigation.tsx
+// components/TabNavigation.tsx
 'use client';
 
-import { useEffect } from 'react';
+import React from 'react';
 
-declare global {
-  interface Window {
-    showSection?: (section: string) => void;
-  }
+// Tipe untuk key tiap tab
+export type SectionKey =
+  | 'dashboard'
+  | 'pm'
+  | 'eng'
+  | 'proc'
+  | 'fab'
+  | 'const'
+  | 'upload';
+
+interface TabNavigationProps {
+  activeSection: SectionKey;
+  onSectionChange: (section: SectionKey) => void;
 }
 
-export default function TabNavigation() {
-  useEffect(() => {
-    const links = document.querySelectorAll('.nav-link');
-    links.forEach(link => {
-      link.addEventListener('click', e => {
-        e.preventDefault();
-        links.forEach(l => l.classList.remove('active'));
-        (e.currentTarget as HTMLElement).classList.add('active');
-        const section = (e.currentTarget as HTMLElement).dataset.section!;
-        window.showSection?.(section);
-      });
-    });
-  }, []);
+// Daftar tab dan label-nya
+const tabs: { key: SectionKey; label: string }[] = [
+  { key: 'dashboard', label: 'General' },
+  { key: 'pm',        label: 'PMT' },
+  { key: 'eng',       label: 'Engineering' },
+  { key: 'proc',      label: 'Procurement' },
+  { key: 'fab',       label: 'Fabrication' },
+  { key: 'const',     label: 'Construction' },
+  { key: 'upload',    label: 'Upload' },
+];
 
+export default function TabNavigation({
+  activeSection,
+  onSectionChange,
+}: TabNavigationProps) {
   return (
     <div className="nav-tabs">
-      <a href="#" className="nav-link active" data-section="dashboard">
-        <i className="bi bi-bar-chart-line"></i> General
-      </a>
-      <a href="#" className="nav-link" data-section="pm">
-        <i className="bi bi-diagram-3-fill"></i> PMT
-      </a>
-      <a href="#" className="nav-link" data-section="eng">
-        <i className="bi bi-gear-wide-connected"></i> Engineering
-      </a>
-      <a href="#" className="nav-link" data-section="proc">
-        <i className="bi bi-bag-check"></i> Procurement
-      </a>
-      <a href="#" className="nav-link" data-section="fab">
-        <i className="bi bi-building"></i> Fabrication
-      </a>
-      <a href="#" className="nav-link" data-section="const">
-        <i className="bi bi-tools"></i> Construction
-      </a>
-      <a href="#" className="nav-link" data-section="upload">
-        <i className="bi bi-cloud-arrow-up-fill"></i> Upload
-      </a>
+      {tabs.map(tab => (
+        <button
+          key={tab.key}
+          className={`nav-link ${activeSection === tab.key ? 'active' : ''}`}
+          onClick={() => onSectionChange(tab.key)}
+        >
+          {tab.label}
+        </button>
+      ))}
     </div>
   );
 }
