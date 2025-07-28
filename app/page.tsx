@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import TabNavigation from '@/components/TabNavigation';
 import DashboardContent from '@/components/DashboardContent';
+import LogoutButton from '@/components/LogoutButton';
 
 declare global {
   interface Window {
@@ -42,6 +43,7 @@ export default function HomePage() {
       <Navbar />
       <TabNavigation />
       <DashboardContent />
+      <LogoutButton/>
     </>
   );
 }
